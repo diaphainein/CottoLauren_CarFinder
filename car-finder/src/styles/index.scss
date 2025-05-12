@@ -1,0 +1,140 @@
+/* font & text */
+@mixin open-sans {
+  font-family: "Open Sans", sans-serif;
+}
+
+@mixin medium {
+  font-weight: 500;
+}
+
+@mixin bold {
+  font-weight: 700;
+}
+
+@mixin left {
+  text-align: left;
+}
+
+/* color vars */
+$white: #FFFFFF;
+$subtext: #D3D3D3;
+$form-panel-bg: #F2F2F2;
+$blue: #348FBC;
+$disabled: #909090;
+$selected: #212121;
+
+/* flexbox */
+@mixin flex-box($direction: column, $justify: center, $alignment: center) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $alignment;
+}
+
+html {
+  /* background */
+  background-image: url('../images/car-finder-bg.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: gray;
+}
+
+body {
+  @include flex-box(column, center, flex-start);
+  height: 100vh;
+}
+
+main {
+  @include flex-box(column, center, flex-start);
+  width: 100%;
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+.intro {
+  @include flex-box(column, center, flex-start);
+  @include open-sans;
+  color: $white;
+
+  h1 {
+    @include bold;
+    font-size: 3rem;
+  }
+
+  p {
+    @include medium;
+    margin: 0rem 0rem 0.5rem;
+
+    &:last-of-type {
+      margin: 0rem 0rem 2rem;
+    }
+
+    font-size: 0.875rem;
+  }
+}
+
+.selection {
+  @include open-sans;
+  @include flex-box(row, flex-start, center);
+  background-color: $form-panel-bg;
+  border-radius: 5px;
+  width: 80vw;
+  height: 20vh;
+
+  div {
+    color: $disabled;
+    margin: 1rem 0rem 1rem 3rem;
+    width: 33%;
+    border-right: 2px solid $subtext;
+
+    &:last-of-type {
+      border-right: none;
+    }
+
+    h2 {
+      @include bold;
+      font-size: 2rem;
+    }
+
+    label {
+      font-size: 0.75rem;
+      display: block;
+      margin: 0px 0px -8px 8px;
+      z-index: 2;
+      position: relative;
+      background-color: $form-panel-bg;
+    }
+
+    select {
+      width: 200px;
+      height: 35px;
+      background-color: $form-panel-bg;
+    }
+  }
+
+  div.year {
+    label {
+      width: 25px;
+    }
+  }
+
+  div.make {
+    label {
+      width: 31px;
+    }
+  }
+
+  div.model {
+    label {
+      width: 37px;
+    }
+  }
+
+  div.active {
+    color: $blue;
+
+    select {
+      border-color: $blue;
+    }
+  }
+}

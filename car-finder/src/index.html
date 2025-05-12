@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+    rel="stylesheet">
+  <title>Used Car Finder</title>
+</head>
+
+<body>
+  <main>
+    <section class="intro">
+      <h1>Find Your Dream Vehicle</h1>
+      <p>Have you been dreaming about getting a new vehicle?</p>
+      <p>Well, you're in luck.</p>
+    </section>
+    <section class="selection">
+      <div class="year active">
+        <h2>Year</h2>
+        <label for="year">Year</label>
+        <select name="year" id="year">
+          <option value="Select Year">Select Year</option>
+        </select>
+      </div>
+      <div class="make">
+        <h2>Make</h2>
+        <label for="make">Make</label>
+        <select name="make" id="make">
+          <option disabled selected>Select Make</option>
+        </select>
+      </div>
+      <div class="model">
+        <h2>Model</h2>
+        <label for="model">Model</label>
+        <select name="model" id="model">
+          <option disabled selected>Select Model</option>
+        </select>
+      </div>
+    </section>
+  </main>
+  <script src="bundle.js"></script>
+</body>
+
+</html>
