@@ -1,30 +1,44 @@
 // import scss
 import './styles/index.scss';
-
-// get car data
 import * as data from './car-dataset.json';
 
-// make JSON into usable array 
 const cars = [...data.default];
 
-// grab year - only one of each type
-const years = [...new Set(cars.map(car => car.year))].sort((a, b) => b - a);
+// build lookup once for more efficient code - aka "giant filing cabinet"
+const carLookup = new Map();
 
-// grab "make"/"manufacturer" - only one of each type, based on selected year
-const getManufacturers = (year) => {
-  return [...new Set(cars.filter(car => car.year === year).map(car => car.Manufacturer.toLowerCase()))].sort();
-}
+// assigning keys for year and make/manufacturer
+cars.forEach(({ year, Manufacturer, model }) => {
+  const yearKey = year;
+  const makeKey = Manufacturer.toLowerCase();
 
-// grab model - only one of each type, based on selected year and manufacturer
-const getModel = (year, manufacturer) => {
-  return [...new Set(
-    cars
-      .filter(car => car.year === year && car.Manufacturer.toLowerCase() === manufacturer.toLowerCase())
-      .map(car => car.model)
-  )].sort();
-}
+  // does carLookup have that year? no = create new Map object/"bucket" for that year - aka "drawer" in "giant filing cabinet"
+  if (!carLookup.has(yearKey)) {
+    carLookup.set(yearKey, new Map());
+  }
 
-// function to get all final selections - to be used later
+  // create "folder" in each year "drawer" to hold makes/manufacturers
+  const makesMap = carLookup.get(yearKey);
+  if (!makesMap.has(makeKey)) {
+    makesMap.set(makeKey, new Set());
+  }
+  // add models per make - each model is a "paper" in "folder" within the year "drawer" in the carLookup "filing cabinet"
+  makesMap.get(makeKey).add(model);
+});
+
+// years sorted descending
+const years = [...carLookup.keys()].sort((a, b) => b - a);
+
+// lookup for make
+const getManufacturers = (year) =>
+  // chaining ? as a safety so that app doesn't crash if something returns undefined
+  [...carLookup.get(year)?.keys() || []].sort();
+
+// lookup for model
+const getModel = (year, manufacturer) =>
+  [...(carLookup.get(year)?.get(manufacturer.toLowerCase()) || [])].sort();
+
+// getting and returning final selection data via filter method
 const getFinalSelection = (data, year, make, model) => {
   return data.filter(
     car =>
@@ -32,21 +46,18 @@ const getFinalSelection = (data, year, make, model) => {
       car.Manufacturer.toLowerCase() === make.toLowerCase() &&
       car.model === model
   );
-}
+};
 
-// function to set up everything and run later
+// dropdown logic
 const getCars = (data) => {
-  // grab html elements
   const yearDropdown = document.getElementById('year');
   const makeDropdown = document.getElementById('make');
   const modelDropdown = document.getElementById('model');
 
-  // fill year dropdown
   years.forEach(year => {
     yearDropdown.innerHTML += `<option value="${year}">${year}</option>`;
   });
 
-  // listen for change and populate make dropdown
   yearDropdown.addEventListener('change', () => {
     const selectedYear = parseInt(yearDropdown.value);
     const makes = getManufacturers(selectedYear);
@@ -55,13 +66,11 @@ const getCars = (data) => {
       makeDropdown.innerHTML += `<option value="${make}">${make}</option>`;
     });
     makeDropdown.disabled = false;
-    const makeActive = document.querySelector(".make");
-    makeActive.classList.add("active");
+    document.querySelector(".make").classList.add("active");
     modelDropdown.disabled = true;
     modelDropdown.innerHTML = `<option disabled selected>Select Model</option>`;
   });
 
-  // listen for change and populate model dropdown
   makeDropdown.addEventListener('change', () => {
     const selectedYear = parseInt(yearDropdown.value);
     const selectedMake = makeDropdown.value;
@@ -71,25 +80,22 @@ const getCars = (data) => {
       modelDropdown.innerHTML += `<option value="${model}">${model}</option>`;
     });
     modelDropdown.disabled = false;
-    const modelActive = document.querySelector(".model");
-    modelActive.classList.add("active");
+    document.querySelector(".model").classList.add("active");
   });
 
-  // listen for change and populate console
   modelDropdown.addEventListener('change', () => {
     const selectedYear = parseInt(yearDropdown.value);
     const selectedMake = makeDropdown.value;
     const selectedModel = modelDropdown.value;
     const results = getFinalSelection(data, selectedYear, selectedMake, selectedModel);
 
-    if (results.length > 0) {
-      console.log("Here are the cars that match your search 🚗", results);
-    } else {
-      console.log("No cars found with the selected criteria.");
-    }
+    console.log(
+      results.length > 0
+        ? "Here are the cars that match your search: "
+        : "No cars found with the selected criteria.",
+      results
+    );
   });
+};
 
-}
-
-// run function to get cars and return results
 getCars(cars);
