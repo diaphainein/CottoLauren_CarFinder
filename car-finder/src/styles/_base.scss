@@ -1,0 +1,52 @@
+/* font & text */
+@mixin open-sans {
+  font-family: "Open Sans", sans-serif;
+}
+
+@mixin medium {
+  font-weight: 500;
+}
+
+@mixin bold {
+  font-weight: 700;
+}
+
+@mixin left {
+  text-align: left;
+}
+
+/* color vars */
+$white: #FFFFFF;
+$subtext: #D3D3D3;
+$form-panel-bg: #F2F2F2;
+$blue: #348FBC;
+$disabled: #909090;
+$selected: #212121;
+
+/* flexbox */
+@mixin flex-box($direction: column, $justify: center, $alignment: center) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $alignment;
+}
+
+html {
+  /* background */
+  background-image: url('../images/car-finder-bg.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: gray;
+}
+
+body {
+  @include flex-box(column, center, flex-start);
+  height: 100vh;
+}
+
+main {
+  @include flex-box(column, center, flex-start);
+  width: 100%;
+  max-width: 80%;
+  margin: 0 auto;
+}

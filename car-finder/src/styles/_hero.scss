@@ -1,0 +1,89 @@
+@use 'base' as *;
+
+.intro {
+  @include flex-box(column, center, flex-start);
+  @include open-sans;
+  color: $white;
+
+  h1 {
+    @include bold;
+    font-size: 3rem;
+  }
+
+  p {
+    @include medium;
+    margin: 0rem 0rem 0.5rem;
+
+    &:last-of-type {
+      margin: 0rem 0rem 2rem;
+    }
+
+    font-size: 0.875rem;
+  }
+}
+
+.selection {
+  @include open-sans;
+  @include flex-box(row, flex-start, center);
+  background-color: $form-panel-bg;
+  border-radius: 5px;
+  width: 80vw;
+  height: 20vh;
+
+  div {
+    color: $disabled;
+    margin: 1rem 0rem 1rem 3rem;
+    width: 33%;
+    border-right: 2px solid $subtext;
+
+    &:last-of-type {
+      border-right: none;
+    }
+
+    h2 {
+      @include bold;
+      font-size: 2rem;
+    }
+
+    label {
+      font-size: 0.75rem;
+      display: block;
+      margin: 0px 0px -8px 8px;
+      z-index: 2;
+      position: relative;
+      background-color: $form-panel-bg;
+    }
+
+    select {
+      width: 200px;
+      height: 35px;
+      background-color: $form-panel-bg;
+    }
+  }
+
+  div.year {
+    label {
+      width: 25px;
+    }
+  }
+
+  div.make {
+    label {
+      width: 31px;
+    }
+  }
+
+  div.model {
+    label {
+      width: 37px;
+    }
+  }
+
+  div.active {
+    color: $blue;
+
+    select {
+      border-color: $blue;
+    }
+  }
+}
